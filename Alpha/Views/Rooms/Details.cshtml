@@ -1,0 +1,49 @@
+﻿@model Alpha.Models.Room
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <strong>
+        <a asp-action="Index">&lt; Back to List</a>
+    </strong>
+    <hr />
+    <div class="row">
+        <span class="Room">@Html.DisplayFor(model => model.Name)</span><br />
+        <span class="Seats">Seats: <strong>@Html.DisplayFor(model => model.Seats)</strong></span>
+    </div>
+    <div class="row">
+        @Html.DisplayFor(model => model.Projector) @Html.DisplayNameFor(model => model.Projector)<br />
+        @Html.DisplayFor(model => model.Board) @Html.DisplayNameFor(model => model.Board)
+    </div>
+    <div class="row">
+        @Html.DisplayFor(model => model.Descrtiption)
+    </div>
+    <div class="row">
+        <div>
+            <strong>@Html.DisplayNameFor(model => model.Reservations)</strong>
+</div>
+    </div>
+    @foreach (var item in Model.Reservations.OrderBy(r => r.Start))
+    {
+    <div class="row">
+        <div class="col-xs-2">
+            @item.Start.ToShortDateString()
+        </div>
+        <div class="col-xs-2">
+            @item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()
+        </div>
+        <div class="col-xs-2">
+            @ViewBag.Users[1] - @item.UserId 
+        </div>
+    </div>
+    <hr /> 
+    }
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
+</div>

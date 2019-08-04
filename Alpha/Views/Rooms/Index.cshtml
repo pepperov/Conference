@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Alpha.Models.Room>
+
+@{
+    ViewData["Title"] = "Rooms";
+}
+
+<h2>Rooms</h2>
+<br />
+<strong><a asp-action="Create">+ Add new</a></strong>
+<hr />
+
+@foreach (var item in Model)
+{
+<a asp-action="Details" asp-route-id="@item.Id">
+    <div class="row">
+        <div class="col-xs-3">
+            <span class="Room">@Html.DisplayFor(modelItem => item.Name)</span><br />
+            <span class="Seats">Seats: <strong>@Html.DisplayFor(modelItem => item.Seats)</strong></span>
+        </div>
+        <div class="col-xs-3">
+            @Html.DisplayFor(modelItem => item.Projector)
+            @Html.DisplayFor(modelItem => item.Board)
+        </div>
+    </div>
+    <hr />
+</a>
+}
+
