@@ -38,7 +38,7 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-            ViewData["Users"] = _context.Users.Include(.ToList();
+            ViewData["Users"] = _context.Users.ToList();
             return View(room);
         }
 
@@ -84,11 +84,6 @@ namespace Alpha.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
         {
             room.Id = id;
-            //if (id != room.Id)
-            //{
-            //    return NotFound();
-            //}
-
             if (ModelState.IsValid)
             {
                 try
@@ -107,7 +102,8 @@ namespace Alpha.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect($"/Rooms/Details/{id}");
             }
             return View(room);
         }

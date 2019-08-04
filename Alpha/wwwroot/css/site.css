@@ -10,7 +10,7 @@
 }
 
 .row {
-    margin-bottom:20px;
+    margin-bottom:5px;
 }
 
 .Room {
@@ -19,4 +19,9 @@
 
 .Seats {
     font-size:90%;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ff6a00;
 }

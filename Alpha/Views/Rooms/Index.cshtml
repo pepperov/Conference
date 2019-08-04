@@ -5,24 +5,46 @@
 }
 
 <h2>Rooms</h2>
-<br />
-<strong><a asp-action="Create">+ Add new</a></strong>
-<hr />
 
+
+
+
+<hr />
+<a asp-action="Create">
+    <div class="row">
+        <div class="col-xs-12">
+            <nowrap><strong>+ Create new room</strong></nowrap>
+</div>
+    </div>
+</a>
+<hr />
 @foreach (var item in Model)
 {
-<a asp-action="Details" asp-route-id="@item.Id">
-    <div class="row">
-        <div class="col-xs-3">
-            <span class="Room">@Html.DisplayFor(modelItem => item.Name)</span><br />
-            <span class="Seats">Seats: <strong>@Html.DisplayFor(modelItem => item.Seats)</strong></span>
+    <a asp-action="Details" asp-route-id="@item.Id">
+        <div class="row">
+            <div class="col-xs-3">
+                <span class="Room">@Html.DisplayFor(modelItem => item.Name)</span><br />
+                <span class="Seats">Seats: <strong>@Html.DisplayFor(modelItem => item.Seats)</strong></span>
+            </div>
+            <div class="col-xs-3">
+                @if (item.Projector)
+                {
+                <span>&#9899;</span> @Html.DisplayNameFor(modelItem => item.Projector)
+                }
+                @if (item.Projector && item.Board)
+                {
+                    <br />
+                }
+                @if (item.Board)
+                {
+                    <span>&#10002;</span> @Html.DisplayNameFor(modelItem => item.Board)
+                }
+            </div>
+            <div class="col-xs-3">
+                @item.Reservations.Min(s => s.Start.ToString())<br />
+            </div>
         </div>
-        <div class="col-xs-3">
-            @Html.DisplayFor(modelItem => item.Projector)
-            @Html.DisplayFor(modelItem => item.Board)
-        </div>
-    </div>
+    </a>
     <hr />
-</a>
 }
 

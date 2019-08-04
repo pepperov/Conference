@@ -11,27 +11,29 @@ namespace Alpha.Models
         [ScaffoldColumn(false)]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
+        [Required(ErrorMessage = "Required")]
         public Status Status { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Время начала")]
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Start time")]
         [DataType(DataType.DateTime)]
         public DateTime Start { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Время окончания")]
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "End time")]
         [DataType(DataType.DateTime)]
         public DateTime End { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Пользователь")]
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Owner")]
         public int UserId { get; set; }
+
         public User User { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Конференц-зал")]
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Conference room")]
         public int RoomId { get; set; }
+
         public Room Room { get; set; }
     }
 }

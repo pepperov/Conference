@@ -28,11 +28,11 @@ namespace Alpha.Models
         [UIHint("Boolean")]
         public bool Projector { get; set; }
 
-        [Display(Name = "Board")]
+        [Display(Name = "Marker board")]
         [UIHint("Boolean")]
         public bool Board { get; set; }
 
-        [Display(Name = "Scheduled time")]
+        [Display(Name = "Schedule")]
         public List<Reservation> Reservations { get; set; }
 
         public Room()
