@@ -28,6 +28,22 @@ namespace Alpha.Controllers
             return View(await reservations.ToListAsync());
         }
 
+        // GET: Reservations/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Reservation reservation = await _context.Reservations.Include(r => r.Room).Include(r => r.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            return View(reservation);
+        }
+
         // GET: Reservations/Create
         public IActionResult Create(int? id)
         {
@@ -55,14 +71,14 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Edit/{?id}
+        // GET: Reservations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Reservation reservation = await _context.Reservations.FindAsync(id);
+            var reservation = await _context.Reservations.FindAsync(id);
             if (reservation == null)
             {
                 return NotFound();
@@ -70,11 +86,10 @@ namespace Alpha.Controllers
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", reservation.RoomId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", reservation.UserId);
-            ViewData["Users"] = _context.Users.ToList();
             return View(reservation);
         }
 
-        // POST: Reservations/Edit/{id}
+        // POST: Reservations/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Status,Start,End,UserId,RoomId")] Reservation reservation)
@@ -106,8 +121,8 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Remove/{?id}
-        public async Task<IActionResult> Remove(int? id)
+        // GET: Reservations/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -124,10 +139,10 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
-        // POST: Reservations/Remove/{id}
-        [HttpPost, ActionName("Remove")]
+        // POST: Reservations/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             Reservation reservation = await _context.Reservations.FindAsync(id);
             _context.Reservations.Remove(reservation);

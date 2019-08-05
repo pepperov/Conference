@@ -4,33 +4,15 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit reservation</h2>
+<h2>Edit</h2>
 
-<div class="row">
-    <div class="col-xs-12">
-        <strong>
-            <span><a asp-action="Index">&larr;&nbsp;Back to reservations</a>&nbsp;</span> |
-            <span class="icon">&nbsp;&#10003;&nbsp;Edit</span> |
-            <span class="icon"><a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a></span>
-        </strong>
-    </div>
-</div>
-
+<h4>Reservation</h4>
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="RoomId" class="control-label"></label>
-                <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
-                <span asp-validation-for="RoomId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <select asp-for="Status" class="form-control" asp-items="ViewBag.Status"></select>
@@ -47,13 +29,24 @@
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save changes" class="btn btn-info" />
-                <span><a asp-action="Index">x&nbsp;Cancel</a></span>
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
-
-
+            <div class="form-group">
+                <label asp-for="RoomId" class="control-label"></label>
+                <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                <span asp-validation-for="RoomId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

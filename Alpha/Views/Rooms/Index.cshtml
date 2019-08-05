@@ -6,13 +6,18 @@
 
 <h2>Rooms</h2>
 
+
+
+
+<hr />
 <a asp-action="Create">
     <div class="row">
         <div class="col-xs-12">
             <nowrap><strong>+ Add new room</strong></nowrap>
-        </div>
+</div>
     </div>
 </a>
+<hr />
 @foreach (var item in Model)
 {
     <a asp-action="Details" asp-route-id="@item.Id">
@@ -44,5 +49,6 @@
             }
         </div>
     </a>
+    <hr />
 }
 

@@ -4,7 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Add new reservation</h2>
+<h2>Create new reservation</h2>
+<hr />
 
 <a asp-action="Index">
     <div class="row">
@@ -14,6 +15,7 @@
     </div>
 </a>
 
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -48,7 +50,7 @@
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Add reservation" class="btn btn-info" />
+                <input type="submit" value="Create" class="btn btn-info" />
             </div>
         </form>
     </div>

@@ -8,7 +8,8 @@ namespace Alpha.Models
         [ScaffoldColumn(false)]
         public int Id { get; set; }
 
-        public int RoleId { get; set; }
+        [Required(ErrorMessage = "Обязательное поле")]
+        [Display(Name = "Тип учетной записи")]
         public Role Role { get; set; }
 
         [Required(ErrorMessage = "Обязательное поле")]
@@ -20,10 +21,10 @@ namespace Alpha.Models
         [EmailAddress(ErrorMessage = "Некорректный адрес")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Пароль")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        //[Required(ErrorMessage = "Обязательное поле")]
+        //[Display(Name = "Пароль")]
+        //[DataType(DataType.Password)]
+        //public string Password { get; set; }
 
         public List<Reservation> Reservations { get; set; }
 
