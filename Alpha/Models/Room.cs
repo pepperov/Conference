@@ -32,7 +32,7 @@ namespace Alpha.Models
         [UIHint("Boolean")]
         public bool Board { get; set; }
 
-        [Display(Name = "Schedule")]
+        [Display(Name = "Reservations")]
         public List<Reservation> Reservations { get; set; }
 
         public Room()

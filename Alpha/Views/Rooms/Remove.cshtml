@@ -1,0 +1,28 @@
+﻿@model Alpha.Models.Room
+
+@{
+    ViewData["Title"] = "Remove";
+}
+
+<h2>
+    <a asp-action="Details" asp-route-id="@Model.Id">@Html.DisplayFor(model => model.Name)</a>
+</h2>
+<div class="row">
+    <div class="col-xs-12">
+        <strong>
+            <span><a asp-action="Index">&larr;&nbsp;Back to rooms</a>&nbsp;</span> |
+            <span class="icon"><a asp-action="Edit" asp-route-id="@Model.Id">&nbsp;&#10003;&nbsp;Edit</a></span> |
+            <span class="icon">&nbsp;x&nbsp;Remove</span>
+        </strong>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h4>Are you sure you want to delete @Model.Name?</h4>
+        <br />
+        <form asp-action="Remove">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete room" class="btn btn-danger" />
+        </form>
+    </div>
+</div>

@@ -13,7 +13,6 @@ namespace Alpha.Controllers
     public class UsersController : Controller
     {
         private readonly AlphaDbContext _context;
-        private List<Role> Roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
 
         public UsersController(AlphaDbContext context)
         {
@@ -26,7 +25,7 @@ namespace Alpha.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Users/Details/{?id}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,7 +44,7 @@ namespace Alpha.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
+            ViewData["Roles"] = new SelectList(_context.Roles, "Id", "Name");
             return View();
         }
 
@@ -60,11 +59,11 @@ namespace Alpha.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
+            ViewData["Roles"] = new SelectList(_context.Roles, "Id", "Name");
             return View(user);
         }
 
-        // GET: Users/Edit/5
+        // GET: Users/Edit/{?id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,21 +75,16 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
+            ViewData["Roles"] = new SelectList(_context.Roles, "Id", "Name");
             return View(user);
         }
 
-        // POST: Users/Edit/5
+        // POST: Users/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Role,Name,Email")] User user)
         {
             user.Id = id;
-            //if (id != user.Id)
-            //{
-            //    return NotFound();
-            //}
-
             if (ModelState.IsValid)
             {
                 try
@@ -111,12 +105,12 @@ namespace Alpha.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
+            ViewData["Roles"] = new SelectList(_context.Roles, "Id", "Name");
             return View(user);
         }
 
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Users/Remove/{?id}
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
@@ -131,8 +125,8 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Users/Remove/{id}
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

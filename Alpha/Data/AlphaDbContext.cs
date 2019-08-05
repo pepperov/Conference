@@ -9,6 +9,7 @@ namespace Alpha.Data
     public class AlphaDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
@@ -19,14 +20,15 @@ namespace Alpha.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Role>().HasMany(e => e.Users).WithOne(e => e.Role).HasForeignKey(e => e.RoleId);
+
             modelBuilder.Entity<Reservation>(entity =>
                 {
                     entity.HasOne(e => e.User).WithMany(e => e.Reservations).HasForeignKey(e => e.UserId);
                     entity.HasOne(e => e.Room).WithMany(e => e.Reservations).HasForeignKey(e => e.RoomId);
                 }
              );
-
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

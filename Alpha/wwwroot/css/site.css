@@ -10,7 +10,9 @@
 }
 
 .row {
-    margin-bottom:0px;
+    border-bottom: 1px solid #B0B0B0;
+    padding: 10px 5px 10px 0px;
+    margin-bottom: 0px;
 }
 
 .icon {
@@ -24,4 +26,8 @@
 a:hover {
     text-decoration: none;
     color: #ff6a00;
+}
+
+a.header {
+    font-weight: bold;
 }

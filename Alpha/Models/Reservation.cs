@@ -15,12 +15,12 @@ namespace Alpha.Models
         public Status Status { get; set; }
 
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "Start time")]
+        [Display(Name = "Starts")]
         [DataType(DataType.DateTime)]
         public DateTime Start { get; set; }
 
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "End time")]
+        [Display(Name = "Ends")]
         [DataType(DataType.DateTime)]
         public DateTime End { get; set; }
 

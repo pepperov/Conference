@@ -106,8 +106,8 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Rooms/Remove/{?id}
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
@@ -123,10 +123,10 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // POST: Rooms/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Rooms/Remove/{id}
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> RemoveConfirmed(int id)
         {
             Room room = await _context.Rooms.FindAsync(id);
             _context.Rooms.Remove(room);
