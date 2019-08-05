@@ -115,8 +115,8 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Users/Remove/{?id}
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
@@ -131,8 +131,8 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Users/Remove/{id}
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
