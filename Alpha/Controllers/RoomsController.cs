@@ -69,8 +69,7 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-
-            var room = await _context.Rooms.FindAsync(id);
+            Room room = await _context.Rooms.FindAsync(id);
             if (room == null)
             {
                 return NotFound();
@@ -102,7 +101,6 @@ namespace Alpha.Controllers
                         throw;
                     }
                 }
-                //return RedirectToAction(nameof(Index));
                 return Redirect($"/Rooms/Details/{id}");
             }
             return View(room);
@@ -116,7 +114,7 @@ namespace Alpha.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
+            Room room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
             {
                 return NotFound();
@@ -130,7 +128,7 @@ namespace Alpha.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
+            Room room = await _context.Rooms.FindAsync(id);
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

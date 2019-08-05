@@ -10,15 +10,15 @@
 }
 
 .row {
-    margin-bottom:5px;
+    margin-bottom:0px;
+}
+
+.icon {
+    margin-right:10px;
 }
 
 .Room {
     font-weight:bold;
-}
-
-.Seats {
-    font-size:90%;
 }
 
 a:hover {

@@ -13,7 +13,7 @@
 <a asp-action="Create">
     <div class="row">
         <div class="col-xs-12">
-            <nowrap><strong>+ Create new room</strong></nowrap>
+            <nowrap><strong>+ Add new room</strong></nowrap>
 </div>
     </div>
 </a>
@@ -23,26 +23,30 @@
     <a asp-action="Details" asp-route-id="@item.Id">
         <div class="row">
             <div class="col-xs-3">
-                <span class="Room">@Html.DisplayFor(modelItem => item.Name)</span><br />
-                <span class="Seats">Seats: <strong>@Html.DisplayFor(modelItem => item.Seats)</strong></span>
+                <span class="Room">@Html.DisplayFor(modelItem => item.Name)</span>
             </div>
             <div class="col-xs-3">
+                <span class="icon">&#9675;</span><strong>@Html.DisplayFor(modelItem => item.Seats)</strong> seats
                 @if (item.Projector)
                 {
-                <span>&#9899;</span> @Html.DisplayNameFor(modelItem => item.Projector)
+                    <br />
+                    <span class="icon">&#9899;</span>@Html.DisplayNameFor(modelItem => item.Projector)
                 }
                 @if (item.Projector && item.Board)
                 {
-                    <br />
                 }
                 @if (item.Board)
                 {
-                    <span>&#10002;</span> @Html.DisplayNameFor(modelItem => item.Board)
+                    <br />
+                    <span class="icon">&#10002;</span>@Html.DisplayNameFor(modelItem => item.Board)
                 }
             </div>
-            <div class="col-xs-3">
-                @item.Reservations.Min(s => s.Start.ToString())<br />
-            </div>
+            @if (item.Reservations.Count > 0)
+            {
+                <div class="col-xs-3">
+                    <span class="icon">&#8734;</span>@item.Reservations.Min(s => s.Start.ToString())
+                </div>
+            }
         </div>
     </a>
     <hr />

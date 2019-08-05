@@ -13,6 +13,7 @@ namespace Alpha.Controllers
     public class ReservationsController : Controller
     {
         private readonly AlphaDbContext _context;
+
         private List<Status> Statuses = Enum.GetValues(typeof(Status)).Cast<Status>().ToList();
 
         public ReservationsController(AlphaDbContext context)
@@ -23,9 +24,7 @@ namespace Alpha.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            var reservations = _context.Reservations
-                .Include(r => r.Room)
-                .Include(r => r.User);
+            var reservations = _context.Reservations.Include(r => r.Room).Include(r => r.User);
             return View(await reservations.ToListAsync());
         }
 
@@ -36,10 +35,7 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-
-            Reservation reservation = await _context.Reservations
-                .Include(r => r.Room)
-                .Include(r => r.User)
+            Reservation reservation = await _context.Reservations.Include(r => r.Room).Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
@@ -49,10 +45,10 @@ namespace Alpha.Controllers
         }
 
         // GET: Reservations/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name");
+            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", id);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name");
             return View();
         }
@@ -62,6 +58,7 @@ namespace Alpha.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Status,Start,End,UserId,RoomId")] Reservation reservation)
         {
+            reservation.Status = Status.Idle;
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
@@ -81,7 +78,6 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-
             var reservation = await _context.Reservations.FindAsync(id);
             if (reservation == null)
             {
@@ -99,11 +95,6 @@ namespace Alpha.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Status,Start,End,UserId,RoomId")] Reservation reservation)
         {
             reservation.Id = id;
-            //if (id != reservation.Id)
-            //{
-            //    return NotFound();
-            //}
-
             if (ModelState.IsValid)
             {
                 try
@@ -137,8 +128,7 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-
-            var reservation = await _context.Reservations
+            Reservation reservation = await _context.Reservations
                 .Include(r => r.Room)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -146,7 +136,6 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-
             return View(reservation);
         }
 
@@ -155,7 +144,7 @@ namespace Alpha.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
+            Reservation reservation = await _context.Reservations.FindAsync(id);
             _context.Reservations.Remove(reservation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -31,7 +31,7 @@ namespace Alpha.Models
         public User User { get; set; }
 
         [Required(ErrorMessage = "Required")]
-        [Display(Name = "Conference room")]
+        [Display(Name = "Room")]
         public int RoomId { get; set; }
 
         public Room Room { get; set; }
