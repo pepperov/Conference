@@ -19,14 +19,13 @@ namespace Alpha.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Reservation>(entity =>
                 {
                     entity.HasOne(e => e.User).WithMany(e => e.Reservations).HasForeignKey(e => e.UserId);
                     entity.HasOne(e => e.Room).WithMany(e => e.Reservations).HasForeignKey(e => e.RoomId);
                 }
              );
-
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

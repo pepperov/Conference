@@ -6,76 +6,72 @@
 
 <h2>
     @Html.DisplayFor(model => model.Name)
-    [&nbsp;<a asp-action="Edit" asp-route-id="@Model.Id">&#10003;&nbsp;Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model.Id">x Delete</a>&nbsp;]
 </h2>
-<hr />
-<a asp-action="Index">
-    <div class="row">
-        <div class="col-xs-12">
-            <nowrap><strong><a asp-action="Index">&larr; Back to rooms</a></strong></nowrap>
-        </div>
+
+<div class="row">
+    <div class="col-xs-12 header">
+        <a asp-action="Index">&larr;&nbsp;Back to rooms</a>
+        &nbsp;|&nbsp;
+        <a asp-action="Edit" asp-route-id="@Model.Id">&#10003;&nbsp;Edit</a>
+        &nbsp;|&nbsp;
+        <a asp-action="Remove" asp-route-id="@Model.Id">x&nbsp;Remove</a>
     </div>
-</a>
-<hr />
+</div>
 
 <div class="row">
     <div class="col-xs-12">
         <span class="icon">&#9675;</span><strong>@Html.DisplayFor(model => model.Seats)</strong> seats
         @if (Model.Projector || Model.Board)
         {
-            <br />
-            <br />
             @if (Model.Projector)
             {
-                <span class="icon">&#9899;</span>@Html.DisplayNameFor(model => model.Projector) <br />
-            }
-            @if (Model.Projector && Model.Board)
-            {
-                <br />
+                <br /><br />
+                <span class="icon">&#9899;</span>@Html.DisplayNameFor(model => model.Projector)
             }
             @if (Model.Board)
             {
+                <br /><br />
                 <span class="icon">&#10002;</span>@Html.DisplayNameFor(model => model.Board)
             }
         }
     </div>
-    </div>
-    <hr />
+</div>
 <div class="row">
     <div class="col-xs-12">
-        <strong>@Html.DisplayNameFor(model => model.Descrtiption)</strong><br /><br />
+        <strong>@Html.DisplayNameFor(model => model.Descrtiption)</strong>
+        <br /><br />
         @Html.DisplayFor(model => model.Descrtiption)
-
-        @if (Model.Reservations.Count > 0)
-        {
-            <hr />
-            <strong>@Html.DisplayNameFor(model => model.Reservations)</strong>
-            <br /><br />
-        }
     </div>
 </div>
-@foreach (var item in Model.Reservations.OrderBy(r => r.Start))
+<a asp-area="" asp-controller="Reservations" asp-action="Add" asp-route-id="@Model.Id">
+    <div class="row">
+        <div class="col-xs-12">
+            <strong>+ Add reservation</strong>
+        </div>
+    </div>
+</a>
+@if (Model.Reservations.Count > 0)
 {
-    <a asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">
-        <div class="row">
-            <div class="col-xs-3">
-                @item.Start.DayOfWeek, @item.Start.ToShortDateString()
-            </div>
-            <div class="col-xs-3">
-                <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
-            </div>
-            <div class="col-xs-6">
-                @item.User.Name
-            </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <a class="header" href="#">Date / Time &uarr;</a>
         </div>
-    </a>
+        <div class="col-xs-8">
+            <a class="header" href="#">Owner</a>
+        </div>
+    </div>
+    @foreach (var item in Model.Reservations.OrderBy(r => r.Start))
+    {
+        <a asp-area="" asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
+            <div class="row">
+                <div class="col-xs-4">
+                    @item.Start.DayOfWeek, @item.Start.ToShortDateString(),
+                    <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
+                </div>
+                <div class="col-xs-8">
+                    @item.User.Name
+                </div>
+            </div>
+        </a>
+    }
 }
-<div class="row">
-    <a asp-area="" asp-controller="Reservations" asp-action="Create" asp-route-id="@Model.Id">
-        <div class="col-xs-3">
-            <br />
-            <nowrap><strong>+ Add reservation</strong></nowrap>
-        </div>
-    </a>
-</div>

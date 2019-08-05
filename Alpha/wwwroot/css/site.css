@@ -10,7 +10,13 @@
 }
 
 .row {
-    margin-bottom:0px;
+    border-bottom: 1px solid #c0c0c0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.row.rooms {
+    height: 6em;
 }
 
 .icon {
@@ -19,6 +25,10 @@
 
 .Room {
     font-weight:bold;
+}
+
+.header {
+    font-weight: bold;
 }
 
 a:hover {

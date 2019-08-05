@@ -26,7 +26,7 @@ namespace Alpha.Controllers
             return View(await rooms.ToListAsync());
         }
 
-        // GET: Rooms/Details/5
+        // GET: Rooms/Details/{?id}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,16 +42,16 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Create
-        public IActionResult Create()
+        // GET: Rooms/Add
+        public IActionResult Add()
         {
             return View();
         }
 
-        // POST: Rooms/Create
+        // POST: Rooms/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
+        public async Task<IActionResult> Add([Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Edit/5
+        // GET: Rooms/Edit/{?id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,7 +77,7 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // POST: Rooms/Edit/5
+        // POST: Rooms/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
@@ -106,27 +106,25 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Rooms/Remove/{?id}
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             Room room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
             {
                 return NotFound();
             }
-
             return View(room);
         }
 
-        // POST: Rooms/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Rooms/Remove/{id}
+        [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> RemoveConfirmed(int id)
         {
             Room room = await _context.Rooms.FindAsync(id);
             _context.Rooms.Remove(room);

@@ -6,18 +6,16 @@
 
 <h2>
     <a asp-action="Details" asp-route-id="@Model.Id">@Html.DisplayFor(model => model.Name)</a>
-    [&nbsp;&#10003;&nbsp;Edit |
-    <a asp-action="Delete" asp-route-id="@Model.Id">x Delete</a>&nbsp;]
 </h2>
-<hr />
-<a asp-action="Index">
-    <div class="row">
-        <div class="col-xs-12">
-            <nowrap><strong><a asp-action="Index">&larr; Back to rooms</a></strong></nowrap>
-        </div>
+<div class="row">
+    <div class="col-xs-12 header">
+        <a asp-action="Index">&larr;&nbsp;Back to rooms</a>
+        &nbsp;|&nbsp;
+        &#10003;&nbsp;Edit
+        &nbsp;|&nbsp;
+        <a asp-action="Remove" asp-route-id="@Model.Id">x&nbsp;Remove</a>
     </div>
-</a>
-<hr />
+</div>
 
 <form asp-action="Edit">
     <div class="row">
@@ -43,19 +41,18 @@
                     <label>
                         <input asp-for="Board" /> @Html.DisplayNameFor(model => model.Board)
                     </label>
-                    <hr />
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Descrtiption" class="control-label"></label><br /><br />
+                <label asp-for="Descrtiption" class="control-label"></label>
+                <br />
                 <textarea asp-for="Descrtiption" class="form-control"></textarea>
                 <span asp-validation-for="Descrtiption" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <input type="submit" value="Save changes" class="btn btn-success" />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <hr/>
-        <input type="submit" value="Save changes" class="btn btn-success" />
     </div>
 </form>
 

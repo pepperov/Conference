@@ -5,23 +5,17 @@
 }
 
 <h2>Rooms</h2>
-
-
-
-
-<hr />
-<a asp-action="Create">
-    <div class="row">
+<a asp-action="Add">
+    <div class="row header">
         <div class="col-xs-12">
-            <nowrap><strong>+ Add new room</strong></nowrap>
-</div>
+            + Add new room
+        </div>
     </div>
 </a>
-<hr />
 @foreach (var item in Model)
 {
     <a asp-action="Details" asp-route-id="@item.Id">
-        <div class="row">
+        <div class="row rooms">
             <div class="col-xs-3">
                 <span class="Room">@Html.DisplayFor(modelItem => item.Name)</span>
             </div>
@@ -49,6 +43,5 @@
             }
         </div>
     </a>
-    <hr />
 }
 
