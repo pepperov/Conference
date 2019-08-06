@@ -26,7 +26,7 @@ namespace Alpha.Controllers
             return View(await rooms.ToListAsync());
         }
 
-        // GET: Rooms/Details/{?id}
+        // GET: Rooms/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -62,7 +62,7 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Edit/{?id}
+        // GET: Rooms/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,7 +77,7 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // POST: Rooms/Edit/{id}
+        // POST: Rooms/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
@@ -106,7 +106,7 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Remove/{?id}
+        // GET: Rooms/Remove/
         public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
@@ -121,7 +121,7 @@ namespace Alpha.Controllers
             return View(room);
         }
 
-        // POST: Rooms/Remove/{id}
+        // POST: Rooms/Remove/
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)

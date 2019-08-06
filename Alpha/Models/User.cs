@@ -8,17 +8,17 @@ namespace Alpha.Models
         [ScaffoldColumn(false)]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Тип учетной записи")]
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Role")]
         public Role Role { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
-        [Display(Name = "Имя")]
+        [Required(ErrorMessage = "Required")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Обязательное поле")]
+        [Required(ErrorMessage = "Required")]
         [Display(Name = "E-mail")]
-        [EmailAddress(ErrorMessage = "Некорректный адрес")]
+        [EmailAddress(ErrorMessage = "Incorrect e-mail")]
         public string Email { get; set; }
 
         //[Required(ErrorMessage = "Обязательное поле")]

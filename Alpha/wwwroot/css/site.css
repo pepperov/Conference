@@ -1,18 +1,23 @@
 ﻿body {
     font-family: 'Segoe UI';
-    padding-top: 50px;
+    padding-top: 60px;
     padding-bottom: 20px;
 }
 
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .row {
     border-bottom: 1px solid #c0c0c0;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+h4 {
+    font-size: 100%;
+    font-weight: bold;
 }
 
 .row.rooms {

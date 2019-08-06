@@ -26,7 +26,7 @@ namespace Alpha.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Users/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +34,7 @@ namespace Alpha.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+            User user = await _context.Users.Include(s => s.Reservations).FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -42,17 +42,17 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
-        public IActionResult Create()
+        // GET: Users/Add
+        public IActionResult Add()
         {
             ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Users/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Role,Name,Email")] User user)
+        public async Task<IActionResult> Add([Bind("Role,Name,Email")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -64,14 +64,14 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // GET: Users/Edit/5
+        // GET: Users/Edit/
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
+            User user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -80,17 +80,12 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // POST: Users/Edit/5
+        // POST: Users/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Role,Name,Email")] User user)
         {
             user.Id = id;
-            //if (id != user.Id)
-            //{
-            //    return NotFound();
-            //}
-
             if (ModelState.IsValid)
             {
                 try
@@ -109,13 +104,13 @@ namespace Alpha.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Redirect($"/Users/Details/{user.Id}");
             }
             ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
             return View(user);
         }
 
-        // GET: Users/Remove/{?id}
+        // GET: Users/Remove/
         public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
@@ -123,7 +118,7 @@ namespace Alpha.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
+            User user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -131,12 +126,12 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // POST: Users/Remove/{id}
+        // POST: Users/Remove/
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            User user = await _context.Users.FindAsync(id);
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -7,27 +7,35 @@
 <h2>Edit reservation</h2>
 
 <div class="row">
-    <div class="col-xs-12">
-        <strong>
-            <span><a asp-action="Index">&larr;&nbsp;Back to reservations</a>&nbsp;</span> |
-            <span class="icon">&nbsp;&#10003;&nbsp;Edit</span> |
-            <span class="icon"><a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a></span>
-        </strong>
+    <div class="col-xs-12 header">
+        <a asp-action="Index">&larr;&nbsp;Back to reservations</a>
+        &nbsp;|&nbsp;
+        &nbsp;&#10003;&nbsp;Edit
+        &nbsp;|&nbsp;
+        <a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-xs-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="RoomId" class="control-label"></label>
+                (
+                <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.Room.Id">
+                @Model.Room.Name
+                </a>)
                 <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
                 <span asp-validation-for="RoomId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
+                (
+                <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">
+                    @Model.User.Name
+                </a>)
                 <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
@@ -48,10 +56,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save changes" class="btn btn-info" />
-                <span><a asp-action="Index">x&nbsp;Cancel</a></span>
             </div>
-
-
         </form>
     </div>
 </div>

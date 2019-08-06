@@ -1,22 +1,22 @@
 ﻿@model Alpha.Models.Reservation
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add";
 }
 
 <h2>Add new reservation</h2>
 
 <a asp-action="Index">
-    <div class="row">
+    <div class="row header">
         <div class="col-xs-12">
-            <nowrap><strong>&larr; Back to reservations</strong></nowrap>
+            &larr; Back to reservations
         </div>
     </div>
 </a>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="RoomId" class="control-label"></label>
@@ -39,7 +39,8 @@
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <strong>Duration</strong><br />
+                <strong>Duration</strong>
+                <br /><br />
                 <a href="">15min</a> 30min 45min 1hr 90min 2hr
             </div>
             <div class="form-group">

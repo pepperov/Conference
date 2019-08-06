@@ -28,8 +28,8 @@ namespace Alpha.Controllers
             return View(await reservations.ToListAsync());
         }
 
-        // GET: Reservations/Create
-        public IActionResult Create(int? id)
+        // GET: Reservations/Add
+        public IActionResult Add(int? id)
         {
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", id);
@@ -37,17 +37,23 @@ namespace Alpha.Controllers
             return View();
         }
 
-        // POST: Reservations/Create
+        // POST: Reservations/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Status,Start,End,UserId,RoomId")] Reservation reservation)
+        public async Task<IActionResult> Add([Bind("Status,Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
         {
-            reservation.Status = Status.Idle;
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (roomid == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return Redirect($"/Rooms/Details/{roomid}");
+                }
             }
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", reservation.RoomId);
@@ -55,8 +61,8 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Edit/{?id}
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Reservations/Edit/
+        public async Task<IActionResult> Edit(int? id, int? roomid)
         {
             if (id == null)
             {
@@ -71,13 +77,14 @@ namespace Alpha.Controllers
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", reservation.RoomId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", reservation.UserId);
             ViewData["Users"] = _context.Users.ToList();
+            ViewData["Rooms"] = _context.Rooms.ToList();
             return View(reservation);
         }
 
-        // POST: Reservations/Edit/{id}
+        // POST: Reservations/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Status,Start,End,UserId,RoomId")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Status,Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
         {
             reservation.Id = id;
             if (ModelState.IsValid)
@@ -98,7 +105,14 @@ namespace Alpha.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if (roomid == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return Redirect($"/Rooms/Details/{roomid}");
+                }
             }
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", reservation.RoomId);
@@ -106,7 +120,7 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
-        // GET: Reservations/Remove/{?id}
+        // GET: Reservations/Remove/
         public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
@@ -124,7 +138,7 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
-        // POST: Reservations/Remove/{id}
+        // POST: Reservations/Remove/
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)

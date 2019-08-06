@@ -4,33 +4,68 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>User "@Model.Name"</h2>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Role)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-xs-12 header">
+        <a asp-action="Index">&larr;&nbsp;Back to users</a>
+        &nbsp;|&nbsp;
+        <a asp-action="Edit" asp-route-id="@Model.Id">&nbsp;&#10003;&nbsp;Edit</a>
+        &nbsp;|&nbsp;
+        <a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2>@Html.DisplayFor(model => model.Name)</h2>
+        @if (Model.Role == Role.Manager)
+        {
+            <span class="icon">&#9733;</span>
+        }
+        else
+        {
+            <span class="icon">&#9829;</span>
+        }
+        @Html.DisplayFor(model => model.Role)
+        <br /><br />
+    </div>
 </div>
+
+@if (Model.Reservations.Count > 0)
+{
+    <div class="row">
+        <div class="col-xs-12">
+            <strong>@Html.DisplayNameFor(model => model.Reservations)</strong>
+        </div>
+    </div>
+    <div class="row header">
+        <div class="col-xs-4">
+            <a href="#">Date / Time &uarr;</a>
+        </div>
+        <div class="col-xs-4">
+            <a href="#">Room</a>
+        </div>
+        <div class="col-xs-4">
+            <a href="#">Status</a>
+        </div>
+    </div>
+    @foreach (var item in Model.Reservations.OrderBy(r => r.Start))
+    {
+        <a asp-area="" asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
+            <div class="row">
+                <div class="col-xs-4">
+                    @item.Start.DayOfWeek, @item.Start.ToShortDateString(),
+                    <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
+                </div>
+                <div class="col-xs-4">
+                    @item.RoomId
+                </div>
+                <div class="col-xs-4">
+                    @item.Status
+                </div>
+            </div>
+        </a>
+    }
+}
+

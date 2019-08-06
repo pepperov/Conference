@@ -4,24 +4,34 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>
+    <a asp-action="Details" asp-route-id="@Model.Id">User "@Model.Name"</a>
+</h2>
 
-<h4>User</h4>
-<hr />
+<div class="row">
+    <div class="col-xs-12 header">
+        <a asp-action="Index">&larr;&nbsp;Back to users</a>
+        &nbsp;|&nbsp;
+        &nbsp;&#10003;&nbsp;Edit
+        &nbsp;|&nbsp;
+        <a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control" asp-items="ViewBag.Roles"></select>
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <select asp-for="Role" class="form-control" asp-items="ViewBag.Roles"></select>
+                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -29,14 +39,10 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save changes" class="btn btn-success" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

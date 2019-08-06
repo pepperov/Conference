@@ -7,17 +7,17 @@
 <h2>Remove reservation</h2>
 
 <div class="row">
-    <div class="col-xs-12">
-        <strong>
-            <span><a asp-action="Index">&larr;&nbsp;Back to reservations</a>&nbsp;</span> |
-            <span class="icon"><a asp-action="Edit" asp-route-id="@Model.Id">&nbsp;&#10003;&nbsp;Edit</a></span> |
-            <span class="icon">&nbsp;x&nbsp;Remove</span>
-        </strong>
+    <div class="col-xs-12 header">
+        <a asp-action="Index">&larr;&nbsp;Back to reservations</a>
+        &nbsp;|&nbsp;
+        <a asp-action="Edit" asp-route-id="@Model.Id">&nbsp;&#10003;&nbsp;Edit</a>
+        &nbsp;|&nbsp;
+        &nbsp;x&nbsp;Remove
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-xs-12">
         <h4>Are you sure you want to delete reservation for @Model.Room.Name?</h4>
         @Html.DisplayNameFor(model => model.Start) at @Html.DisplayFor(model => model.Start), 
         by <a asp-controller="Users" asp-action="Edit" asp-route-id="@Model.User.Id">@Html.DisplayFor(model => model.User.Name)</a>.
