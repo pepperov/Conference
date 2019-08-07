@@ -12,6 +12,7 @@
         </div>
     </div>
 </a>
+
 @foreach (var item in Model)
 {
     <a asp-action="Details" asp-route-id="@item.Id">
@@ -25,9 +26,6 @@
                 {
                     <br />
                     <span class="icon">&#9899;</span>@Html.DisplayNameFor(modelItem => item.Projector)
-                }
-                @if (item.Projector && item.Board)
-                {
                 }
                 @if (item.Board)
                 {

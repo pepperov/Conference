@@ -5,9 +5,15 @@ using System.Threading.Tasks;
 
 namespace Alpha.Models
 {
-    public enum Role
+    public class Role
     {
-        Manager = 0,
-        Employee = 1
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public List<User> Users { get; set; }
+        public Role()
+        {
+            Users = new List<User>();
+        }
     }
 }

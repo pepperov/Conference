@@ -7,13 +7,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Alpha.Data;
 using Alpha.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Alpha.Controllers
 {
     public class UsersController : Controller
     {
         private readonly AlphaDbContext _context;
-        private List<Role> Roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
 
         public UsersController(AlphaDbContext context)
         {
@@ -23,7 +26,8 @@ namespace Alpha.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var users = _context.Users.Include(s => s.Role);
+            return View(await users.ToListAsync());
         }
 
         // GET: Users/Details/
@@ -33,8 +37,11 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
+            User user = await _context.Users
+                .Include(s => s.Role)
+                .Include(s => s.Reservations)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            User user = await _context.Users.Include(s => s.Reservations).FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -42,29 +49,104 @@ namespace Alpha.Controllers
             return View(user);
         }
 
-        // GET: Users/Add
-        public IActionResult Add()
+
+        [HttpGet]
+        public IActionResult Register()
         {
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
             return View();
         }
 
-        // POST: Users/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("Role,Name,Email")] User user)
+        public async Task<IActionResult> Register(Register model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                User user = await _context.Users.FirstOrDefaultAsync(s => s.Email == model.Email);
+
+                if (user == null)
+                {
+                    Role role = await _context.Roles.FirstOrDefaultAsync(s => s.Name == "Employee");
+                    user = new User()
+                    {
+                        Name = model.Name,
+                        Role = role,
+                        Email = model.Email,
+                        Password = model.Password
+                    };
+                    _context.Users.Add(user);
+
+                    await _context.SaveChangesAsync();
+
+                    await Authenticate(user);
+
+                    return RedirectToAction("Index", "Rooms");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "User already exist");
+                }
             }
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
-            return View(user);
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(Login model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _context.Users.Include(s => s.Role).FirstOrDefaultAsync(s => s.Email == model.Email && s.Password == model.Password);
+                
+                if (user != null)
+                {
+                    string name = user.Name;
+                    int roleid = user.RoleId;
+                    string email = user.Email;
+                    Role role = user.Role;
+                    string psw = user.Password;
+
+                    await Authenticate(user);
+
+                    return RedirectToAction("Index", "Rooms");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Incorrect login or password");
+                }
+            }
+            return View(model);
+        }
+
+        private async Task Authenticate(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name),
+                new Claim("email", user.Email),
+                new Claim("id", user.Id.ToString())
+            };
+
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie",
+                ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Login", "Users");
         }
 
         // GET: Users/Edit/
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,14 +158,15 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
+            ViewData["Roles"] = new SelectList(_context.Roles, "Id", "Name", user.RoleId);
             return View(user);
         }
 
         // POST: Users/Edit/
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Role,Name,Email")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("RoleId, Name, Email, Password")] User user)
         {
             user.Id = id;
             if (ModelState.IsValid)
@@ -95,7 +178,7 @@ namespace Alpha.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!UserExists(id))
                     {
                         return NotFound();
                     }
@@ -104,20 +187,20 @@ namespace Alpha.Controllers
                         throw;
                     }
                 }
-                return Redirect($"/Users/Details/{user.Id}");
+                return Redirect($"/Users/Details/{id}");
             }
-            ViewData["Roles"] = new SelectList(Roles, Roles.ToString());
+            ViewData["Roles"] = new SelectList(_context.Roles, "Id", "Name");
             return View(user);
         }
 
         // GET: Users/Remove/
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             User user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
@@ -127,6 +210,7 @@ namespace Alpha.Controllers
         }
 
         // POST: Users/Remove/
+        [Authorize(Roles = "Manager")]
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -141,5 +225,6 @@ namespace Alpha.Controllers
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
     }
 }

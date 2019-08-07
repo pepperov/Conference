@@ -9,15 +9,16 @@
 </h2>
 
 <a asp-action="Index">
-    <div class="row">
+    <div class="row header">
         <div class="col-xs-12">
-            <nowrap><strong><a asp-action="Index">&larr; Back to rooms</a></strong></nowrap>
+            &larr; Back to rooms
         </div>
     </div>
 </a>
 
 <div class="row">
     <div class="col-md-4">
+
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

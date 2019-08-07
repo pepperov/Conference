@@ -1,9 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+@{
+    bool auth = User.Identity.IsAuthenticated;
+    bool IsManager = auth && User.IsInRole("Manager");
+    string roleName = IsManager ? "Manager" : "Employee";
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Project Alpha</title>
+    <title>@ViewData["Title"] - &alpha; Alpha</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -30,9 +38,23 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Rooms" asp-action="Index">Rooms</a></li>
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
-                    <li><a asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a></li>
+                    @if (auth)
+                    {
+                        <li>
+                            <a class="disabled" asp-controller="Users" asp-action="Details">
+                                <span class="icon"><span class="icon">&#@(IsManager ? "9733;" : "9829;")</span> @User.Identity.Name</span>
+                            </a>
+                        </li>
+                        <li><a asp-controller="Users" asp-action="Logout"><span class="icon">&rarr;</span>Logout</a></li>
+                        <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
+                        <li><a asp-controller="Users" asp-action="Index">Users</a></li>
+                        <li><a asp-controller="Reservations" asp-action="Index">Reservations</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Users" asp-action="Login">Login</a></li>
+                        <li><a asp-controller="Users" asp-action="Register">Register</a></li>
+                    }
                 </ul>
             </div>
         </div>

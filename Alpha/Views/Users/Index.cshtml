@@ -17,7 +17,7 @@
 <a asp-action="Details" asp-route-id="@item.Id">
     <div class="row">
         <div class="col-xs-3">
-            @if (item.Role == Role.Manager)
+            @if (item.Role.Name == "Manager")
             {
                 <span class="icon">&#9733;</span>
             }
@@ -25,7 +25,7 @@
             {
                 <span class="icon">&#9829;</span>
             }
-            @Html.DisplayFor(modelItem => item.Role)
+            @Html.DisplayFor(modelItem => item.Role.Name)
         </div>
         <div class="col-xs-3">
             @Html.DisplayFor(modelItem => item.Name)
