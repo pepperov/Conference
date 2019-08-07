@@ -14,25 +14,25 @@
 
 @foreach (var item in Model)
 {
-<a asp-action="Details" asp-route-id="@item.Id">
-    <div class="row">
-        <div class="col-xs-3">
-            @if (item.Role.Name == "Manager")
-            {
-                <span class="icon">&#9733;</span>
-            }
-            else
-            {
-                <span class="icon">&#9829;</span>
-            }
-            @Html.DisplayFor(modelItem => item.Role.Name)
+    <a asp-action="Details" asp-route-id="@item.Id">
+        <div class="row">
+            <div class="col-xs-3">
+                @if (item.Role.Name == "Manager")
+                {
+                    <span class="icon">&#9733;</span>
+                }
+                else
+                {
+                    <span class="icon">&#9829;</span>
+                }
+                @Html.DisplayFor(modelItem => item.Role.Name)
+            </div>
+            <div class="col-xs-3">
+                @Html.DisplayFor(modelItem => item.Name)
+            </div>
+            <div class="col-xs-3">
+                @item.Email
+            </div>
         </div>
-        <div class="col-xs-3">
-            @Html.DisplayFor(modelItem => item.Name)
-        </div>
-        <div class="col-xs-3">
-            @item.Email
-        </div>
-    </div>
-</a>
+    </a>
 }

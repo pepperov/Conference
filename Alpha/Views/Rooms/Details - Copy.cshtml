@@ -57,8 +57,28 @@
         </div>
     </div>
 </a>
-
-
-<div id="res">
-    @{await Html.RenderPartialAsync("Reservations", Model);}
-</div>
+@if (Model.Reservations.Count > 0)
+{
+    <div class="row">
+        <div class="col-xs-4">
+            <a class="header" href="#">Date / Time &uarr;</a>
+        </div>
+        <div class="col-xs-8">
+            <a class="header" href="#">Owner</a>
+        </div>
+    </div>
+    @foreach (var item in Model.Reservations.OrderBy(r => r.Start))
+    {
+        <a class=@(IsManager ? "" : "disabled") asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
+            <div class="row">
+                <div class="col-xs-4">
+                    @item.Start.DayOfWeek, @item.Start.ToShortDateString(),
+                    <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
+                </div>
+                <div class="col-xs-8">
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.User.Id">@item.User.Name</a>
+                </div>
+            </div>
+        </a>
+    }
+}

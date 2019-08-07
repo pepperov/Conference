@@ -43,6 +43,14 @@ namespace Alpha.Controllers
             return View(room);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Reservations(int id)
+        {
+            Room room = await _context.Rooms.Include(r => r.Reservations).FirstOrDefaultAsync(m => m.Id == id);
+
+            return View(room);
+        }
+
         // GET: Rooms/Add
         [Authorize(Roles = "Manager")]
         public IActionResult Add()

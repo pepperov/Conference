@@ -26,6 +26,7 @@ namespace Alpha.Controllers
         public async Task<IActionResult> Index()
         {
             var reservations = _context.Reservations.Include(r => r.Room).Include(r => r.User);
+            ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
             return View(await reservations.ToListAsync());
         }
 
@@ -41,12 +42,14 @@ namespace Alpha.Controllers
         // POST: Reservations/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("Status,Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
+        public async Task<IActionResult> Add([Bind("Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
         {
+            reservation.Status = Status.Idle;
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
+
                 if (roomid == null)
                 {
                     return RedirectToAction(nameof(Index));
@@ -99,7 +102,7 @@ namespace Alpha.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservationExists(reservation.Id))
+                    if (!ReservationExists(id))
                     {
                         return NotFound();
                     }
@@ -114,7 +117,9 @@ namespace Alpha.Controllers
                 }
                 else
                 {
-                    return Redirect($"/Rooms/Details/{roomid}");
+                    return RedirectToAction("Index");
+                    //return RedirectToAction("Details", "Rooms", roomid);
+                    //return Redirect($"~/Rooms/Details/{roomid}");
                 }
             }
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());

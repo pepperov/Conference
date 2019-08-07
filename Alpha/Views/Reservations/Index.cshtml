@@ -1,4 +1,8 @@
-﻿
+﻿@{
+    bool auth = User.Identity.IsAuthenticated;
+    bool IsManager = auth && User.IsInRole("Manager");
+}
+
 @model IEnumerable<Alpha.Models.Reservation>
 
 @{
@@ -36,7 +40,7 @@
 
     @foreach (var item in Model.OrderBy(s => s.Start))
     {
-        <a asp-action="Edit" asp-route-id="@item.Id">
+        <a class=@(IsManager ? "" : "disabled") asp-action="Edit" asp-route-id="@item.Id">
             <div class="row block">
                 <div class="col-xs-2">
                     @Html.DisplayFor(modelItem => item.Room.Name)

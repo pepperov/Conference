@@ -1,11 +1,17 @@
-﻿@model IEnumerable<Alpha.Models.Room>
+﻿@{
+    bool auth = User.Identity.IsAuthenticated;
+    bool IsManager = auth && User.IsInRole("Manager");
+}
+
+@model IEnumerable<Alpha.Models.Room>
 
 @{
     ViewData["Title"] = "Rooms";
 }
 
 <h2>Rooms</h2>
-<a asp-action="Add">
+
+<a class=@(IsManager ? "" : "disabled") asp-action="Add">
     <div class="row header">
         <div class="col-xs-12">
             + Add new room
