@@ -19,7 +19,7 @@
 <div class="row">
     <div class="col-xs-12">
         <h2>@Html.DisplayFor(model => model.Name)</h2>
-        @if (Model.Role == Role.Manager)
+        @if (Model.Role.Name == "Manager")
         {
             <span class="icon">&#9733;</span>
         }
@@ -27,7 +27,7 @@
         {
             <span class="icon">&#9829;</span>
         }
-        @Html.DisplayFor(model => model.Role)
+        @Html.DisplayFor(model => model.Role.Name)
         <br /><br />
     </div>
 </div>
@@ -59,7 +59,7 @@
                     <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
                 </div>
                 <div class="col-xs-4">
-                    @item.RoomId
+                    @item.Room
                 </div>
                 <div class="col-xs-4">
                     @item.Status

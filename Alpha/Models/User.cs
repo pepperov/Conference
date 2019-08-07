@@ -5,26 +5,14 @@ namespace Alpha.Models
 {
     public class User
     {
-        [ScaffoldColumn(false)]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Required")]
-        [Display(Name = "Role")]
+        public int RoleId { get; set; }
         public Role Role { get; set; }
 
-        [Required(ErrorMessage = "Required")]
-        [Display(Name = "Name")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Required")]
-        [Display(Name = "E-mail")]
-        [EmailAddress(ErrorMessage = "Incorrect e-mail")]
         public string Email { get; set; }
-
-        //[Required(ErrorMessage = "Обязательное поле")]
-        //[Display(Name = "Пароль")]
-        //[DataType(DataType.Password)]
-        //public string Password { get; set; }
+        public string Password { get; set; }
 
         public List<Reservation> Reservations { get; set; }
 

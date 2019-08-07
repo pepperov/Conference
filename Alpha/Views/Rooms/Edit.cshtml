@@ -13,35 +13,41 @@
         &nbsp;|&nbsp;
         &#10003;&nbsp;Edit
         &nbsp;|&nbsp;
-        <a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a>
+        <a asp-action="Remove" asp-route-id="@Model.Id">x&nbsp;Remove</a>
     </div>
 </div>
 
 <form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="row rooms">
+        <div class="col-xs-2">
+            <div class="form-group">
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input asp-for="Projector" /> @Html.DisplayNameFor(model => model.Projector)</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input asp-for="Board" /> @Html.DisplayNameFor(model => model.Board)</label>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-md-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+        <div class="col-xs-12">
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Seats" class="control-label"></label>
-                <input asp-for="Seats" class="form-control" />
-                <span asp-validation-for="Seats" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Projector" /> @Html.DisplayNameFor(model => model.Projector)
-                    </label>
-                    <br /><br />
-                    <label>
-                        <input asp-for="Board" /> @Html.DisplayNameFor(model => model.Board)
-                    </label>
-                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Descrtiption" class="control-label"></label>

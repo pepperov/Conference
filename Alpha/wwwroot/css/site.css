@@ -1,5 +1,6 @@
 ﻿body {
     font-family: 'Segoe UI';
+    color:#444;
     padding-top: 60px;
     padding-bottom: 20px;
 }
@@ -21,7 +22,7 @@ h4 {
 }
 
 .row.rooms {
-    height: 6em;
+    height: 5.5em;
 }
 
 .icon {
@@ -39,4 +40,9 @@ h4 {
 a:hover {
     text-decoration: none;
     color: #ff6a00;
+}
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #444;
 }

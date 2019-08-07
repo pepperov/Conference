@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Alpha.Data;
 using Alpha.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Alpha.Controllers
 {
@@ -43,12 +44,14 @@ namespace Alpha.Controllers
         }
 
         // GET: Rooms/Add
+        [Authorize(Roles = "Manager")]
         public IActionResult Add()
         {
             return View();
         }
 
         // POST: Rooms/Add
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add([Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
@@ -63,6 +66,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Rooms/Edit/
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,6 +82,7 @@ namespace Alpha.Controllers
         }
 
         // POST: Rooms/Edit/
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
@@ -107,6 +112,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Rooms/Remove/
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
@@ -122,6 +128,7 @@ namespace Alpha.Controllers
         }
 
         // POST: Rooms/Remove/
+        [Authorize(Roles = "Manager")]
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)

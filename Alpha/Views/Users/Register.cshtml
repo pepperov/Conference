@@ -1,0 +1,44 @@
+﻿@model Alpha.Models.Register
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register new user</h2>
+
+<div class="row header">
+    <div class="col-xs-12">
+        &nbsp;
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-6">
+        <form asp-action="Register" asp-controller="Users" asp-anti-forgery="true">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input type="text" asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input type="text" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-info" />
+            </div>
+        </form>
+    </div>
+</div>

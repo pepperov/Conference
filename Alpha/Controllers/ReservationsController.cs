@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Alpha.Data;
 using Alpha.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Alpha.Controllers
 {
@@ -62,6 +63,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Reservations/Edit/
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id, int? roomid)
         {
             if (id == null)
@@ -82,6 +84,7 @@ namespace Alpha.Controllers
         }
 
         // POST: Reservations/Edit/
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Status,Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
@@ -121,6 +124,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Reservations/Remove/
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Remove(int? id)
         {
             if (id == null)
@@ -139,6 +143,7 @@ namespace Alpha.Controllers
         }
 
         // POST: Reservations/Remove/
+        [Authorize(Roles = "Manager")]
         [HttpPost, ActionName("Remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)
