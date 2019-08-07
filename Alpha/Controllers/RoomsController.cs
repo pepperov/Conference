@@ -44,11 +44,10 @@ namespace Alpha.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Reservations(int id)
+        public ActionResult Reservations(int? id)
         {
-            Room room = await _context.Rooms.Include(r => r.Reservations).FirstOrDefaultAsync(m => m.Id == id);
-
-            return View(room);
+            Room room = _context.Rooms.Include(r => r.Reservations).FirstOrDefault(m => m.Id == id);
+            return PartialView("_Reservations", room.Reservations);
         }
 
         // GET: Rooms/Add

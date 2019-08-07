@@ -1,0 +1,32 @@
+﻿@{
+    bool auth = User.Identity.IsAuthenticated;
+    bool IsManager = auth && User.IsInRole("Manager");
+}
+
+@model IEnumerable<Alpha.Models.Reservation>
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="row">
+        <div class="col-xs-4">
+            <a class="header" href="#">Date / Time &uarr;</a>
+        </div>
+        <div class="col-xs-8">
+            <a class="header" href="#">Owner</a>
+        </div>
+    </div>
+    @foreach (var item in Model.ToList().OrderBy(r => r.Start))
+    {
+        <a class=@(IsManager ? "" : "disabled") asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
+            <div class="row">
+                <div class="col-xs-4">
+                    @item.Start.DayOfWeek, @item.Start.ToShortDateString(),
+                    <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
+                </div>
+                <div class="col-xs-8">
+                    Name
+                </div>
+            </div>
+        </a>
+    }
+}

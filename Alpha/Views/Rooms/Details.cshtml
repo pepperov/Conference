@@ -52,13 +52,39 @@
 </div>
 <a asp-area="" asp-controller="Reservations" asp-action="Add" asp-route-id="@Model.Id">
     <div class="row">
-        <div class="col-xs-12">
-            <strong>+ Add reservation</strong>
+        <div class="col-xs-3">
+            <strong>+ Add reservation </strong>
         </div>
     </div>
 </a>
 
+<script type="text/javascript">
+
+    function GetReservations() {
+        $.ajax({
+            type: "GET",
+            url: "../Reservations/@Model.Id",
+            dataType: "text",
+            success: function (data) {
+                if (data != null) {
+                    $("#res").html(data);
+                } else {
+                    $("#res").text("Something went wrong");
+                }
+            },
+            failure: function (response) {
+                $("#res").text("Failure");
+            },
+            error: function (response) {
+                $("#res").text("Error");
+            }
+        });
+    }
+
+    setInterval(GetReservations, 10000);
+
+</script>
 
 <div id="res">
-    @{await Html.RenderPartialAsync("Reservations", Model);}
+    @{await Html.RenderPartialAsync("_Reservations", Model.Reservations);}
 </div>
