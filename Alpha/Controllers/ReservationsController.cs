@@ -95,20 +95,23 @@ namespace Alpha.Controllers
                 .Include(s => s.User)
                 .OrderBy(s => s.Status);
             ViewData["Status"] = Statuses;
+            ViewData["Users"] = _context.Users.ToList();
+            ViewData["Rooms"] = _context.Rooms.ToList();
             return PartialView("_Reservations", res);
         }
 
-        // GET: Reservations/Setstatus
-        public async Task<Status> Setstatus(int id, int status)
+        // GET: Reservations/Aproove
+        public async Task<Status> Aproove(int? id)
         {
             Reservation reservation = await _context.Reservations.FirstOrDefaultAsync(s => s.Id == id);
+
             if (ModelState.IsValid)
             {
-                reservation.Status = (Status)status;
+                reservation.Status = Status.Approved;
                 _context.Update(reservation);
                 await _context.SaveChangesAsync();
             }
-            return 0;
+            return reservation.Status;
         }
 
 

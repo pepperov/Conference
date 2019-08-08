@@ -8,8 +8,6 @@ namespace Alpha.Models
     public enum Status
     {
         Idle = 0,
-        Approved = 1,
-        Declined = 2,
-        Expired = 3
+        Approved = 1
     }
 }
