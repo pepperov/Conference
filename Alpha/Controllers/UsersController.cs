@@ -39,16 +39,24 @@ namespace Alpha.Controllers
             }
             User user = await _context.Users
                 .Include(s => s.Role)
-                .Include(s => s.Reservations)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (user == null)
             {
                 return NotFound();
             }
+            ViewData["Rooms"] = _context.Rooms.ToList();
             return View(user);
         }
 
+        // GET: Rooms/Reservations
+        [HttpGet]
+        public ActionResult Reservations(int? id)
+        {
+            var res = _context.Reservations.Where(s => s.Status == Status.Approved && s.UserId == id).Include(r => r.Room);
+            ViewData["Rooms"] = _context.Rooms.ToList();
+            return PartialView("_Reservations", res);
+        }
 
         [HttpGet]
         public IActionResult Register()

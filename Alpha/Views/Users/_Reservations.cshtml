@@ -15,6 +15,7 @@
             Owner
         </div>
     </div>
+
     @foreach (var item in Model.ToList().OrderBy(r => r.Start))
     {
         <a class=@(IsManager ? "" : "disabled") asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
@@ -24,11 +25,9 @@
                     <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
                 </div>
                 <div class="col-xs-3">
-                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.UserId">@item.User.Name</a>
+                    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@item.RoomId">@item.Room.Name</a>
                 </div>
             </div>
         </a>
     }
 }
-
-

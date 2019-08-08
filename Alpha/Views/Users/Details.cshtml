@@ -1,4 +1,8 @@
-﻿@model Alpha.Models.User
+﻿@{
+    bool auth = User.Identity.IsAuthenticated;
+    bool IsManager = auth && User.IsInRole("Manager");
+}
+@model Alpha.Models.User
 
 @{
     ViewData["Title"] = "Details";
@@ -9,10 +13,13 @@
 <div class="row">
     <div class="col-xs-12 header">
         <a asp-action="Index">&larr;&nbsp;Back to users</a>
-        &nbsp;|&nbsp;
-        <a asp-action="Edit" asp-route-id="@Model.Id">&nbsp;&#10003;&nbsp;Edit</a>
-        &nbsp;|&nbsp;
-        <a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a>
+        @if (IsManager)
+        {
+            <span>&nbsp;|&nbsp;</span>
+            <a asp-action="Edit" asp-route-id="@Model.Id">&nbsp;&#10003;&nbsp;Edit</a>
+            <span>&nbsp;|&nbsp;</span>
+            <a asp-action="Remove" asp-route-id="@Model.Id">&nbsp;x&nbsp;Remove</a>
+        }
     </div>
 </div>
 
@@ -32,40 +39,33 @@
     </div>
 </div>
 
-@if (Model.Reservations.Count > 0)
-{
-    <div class="row">
-        <div class="col-xs-12">
-            <strong>@Html.DisplayNameFor(model => model.Reservations)</strong>
-        </div>
-    </div>
-    <div class="row header">
-        <div class="col-xs-4">
-            <a href="#">Date / Time &uarr;</a>
-        </div>
-        <div class="col-xs-4">
-            <a href="#">Room</a>
-        </div>
-        <div class="col-xs-4">
-            <a href="#">Status</a>
-        </div>
-    </div>
-    @foreach (var item in Model.Reservations.OrderBy(r => r.Start))
-    {
-        <a asp-area="" asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
-            <div class="row">
-                <div class="col-xs-4">
-                    @item.Start.DayOfWeek, @item.Start.ToShortDateString(),
-                    <nowrap>@item.Start.ToShortTimeString()&#150;@item.End.ToShortTimeString()</nowrap>
-                </div>
-                <div class="col-xs-4">
-                    @item.Room
-                </div>
-                <div class="col-xs-4">
-                    @item.Status
-                </div>
-            </div>
-        </a>
+<script type="text/javascript">
+    function GetReservations() {
+        $.ajax({
+            type: "GET",
+            url: "../Reservations/@Model.Id",
+            dataType: "text",
+            success: function (data) {
+                if (data != null) {
+                    $("#res").html(data);
+                } else {
+                    $("#res").text("Something went wrong");
+                }
+            },
+            failure: function (response) {
+                $("#res").text("Failure");
+            },
+            error: function (response) {
+                $("#res").text("Error");
+            }
+        });
     }
-}
 
+    setInterval(GetReservations, 5000);
+
+    GetReservations();
+</script>
+
+<div id="res">
+    @{await Html.RenderPartialAsync("_Reservations", Model.Reservations);}
+</div>

@@ -15,6 +15,8 @@ namespace Alpha.Controllers
     {
         private readonly AlphaDbContext _context;
 
+        private List<Status> Statuses = Enum.GetValues(typeof(Status)).Cast<Status>().ToList();
+
         public RoomsController(AlphaDbContext context)
         {
             _context = context;
@@ -34,20 +36,29 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-            Room room = await _context.Rooms.Include(r => r.Reservations).FirstOrDefaultAsync(m => m.Id == id);
+            Room room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
             {
                 return NotFound();
             }
             ViewData["Users"] = _context.Users.ToList();
+//            ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
+            ViewData["Status"] = Statuses;
             return View(room);
         }
 
+        // GET: Rooms/Reservations
         [HttpGet]
         public ActionResult Reservations(int? id)
         {
-            Room room = _context.Rooms.Include(r => r.Reservations).FirstOrDefault(m => m.Id == id);
-            return PartialView("_Reservations", room.Reservations);
+            //Room room = _context.Rooms.Include(r => r.Reservations).FirstOrDefault(m => m.Id == id);
+            //var res = room.Reservations.Where(s => s.Status == Status.Approved);
+            var res = _context.Reservations.Where(s => s.Status == Status.Approved && s.RoomId == id).Include(r => r.Room);
+
+            ViewData["Users"] = _context.Users.ToList();
+            ViewData["Status"] = Statuses;
+
+            return PartialView("_Reservations", res);
         }
 
         // GET: Rooms/Add
