@@ -2,8 +2,8 @@
 
 @{
     bool auth = User.Identity.IsAuthenticated;
-    bool IsManager = auth && User.IsInRole("Manager");
-    string roleName = IsManager ? "Manager" : "Employee";
+    bool isManager = auth && User.IsInRole("Manager");
+    string roleName = isManager ? "Manager" : "Employee";
 }
 <!DOCTYPE html>
 <html>
@@ -40,13 +40,13 @@
                     {
                         <li>
                             <a class="disabled" asp-controller="Users" asp-action="Details">
-                                <span class="icon"><span class="icon">&#@(IsManager ? "9733;" : "9829;")</span> @User.Identity.Name</span>
+                                <span class="icon"><span class="icon">&#@(isManager ? "9733;" : "9829;")</span> @User.Identity.Name</span>
                             </a>
                         </li>
                         <li><a asp-controller="Users" asp-action="Logout"><span class="icon">&rarr;</span>Logout</a></li>
                         <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
                         <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-                        @if (IsManager)
+                        @if (isManager)
                         {
                             <li><a asp-controller="Reservations" asp-action="Index">Reservations</a></li>
                         }

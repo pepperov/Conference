@@ -30,7 +30,7 @@
 
     <div class="row rooms">
         <div class="col-xs-2">
-            <a asp-controller="Rooms" asp-action="Details" asp-route-id="">
+            <a asp-controller="Rooms" asp-action="Details" asp-route-id="@item.RoomId">
                 @Html.DisplayFor(modelItem => item.Room.Name)
             </a>
         </div>
@@ -45,13 +45,15 @@
             </div>
         </a>
         <div class="col-xs-3">
-            @Html.DisplayFor(modelItem => item.User.Name)
+            <a asp-controller="Users" asp-action="Details" asp-route-id="@item.UserId">
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </a>
         </div>
         <div class="col-xs-2 text-center">
             @if (isIdle)
             {
                 <div class="form-group">
-                    <input type="submit" onclick="Aproove(@item.Id, 0)" value="&#10003;&nbsp;Approve" class="btn btn-success" />
+                    <input type="submit" onclick="Approve(@item.Id, 0)" value="&#10003;&nbsp;Approve" class="btn btn-success" />
                 </div>
             }
         </div>
@@ -61,8 +63,8 @@
 
 <script type="text/javascript">
 
-    function Aproove(id) {
-        let url = "../Reservations/Aproove/" + id;
+    function Approve(id) {
+        let url = "../Reservations/Approve/" + id;
         $("#status").text("Updating...");
 
         $.ajax({

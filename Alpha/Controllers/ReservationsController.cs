@@ -33,9 +33,11 @@ namespace Alpha.Controllers
         // GET: Reservations/Add
         public IActionResult Add(int? id)
         {
+            var users = _context.Users.Where(s => s.Email == User.Identity.Name).ToList();
+
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Name", id);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name");
+            ViewData["UserId"] = new SelectList(users, "Id", "Name");
             return View();
         }
 
@@ -95,13 +97,11 @@ namespace Alpha.Controllers
                 .Include(s => s.User)
                 .OrderBy(s => s.Status);
             ViewData["Status"] = Statuses;
-            ViewData["Users"] = _context.Users.ToList();
-            ViewData["Rooms"] = _context.Rooms.ToList();
             return PartialView("_Reservations", res);
         }
 
-        // GET: Reservations/Aproove
-        public async Task<Status> Aproove(int? id)
+        // GET: Reservations/Approve
+        public async Task<Status> Approve(int? id)
         {
             Reservation reservation = await _context.Reservations.FirstOrDefaultAsync(s => s.Id == id);
 

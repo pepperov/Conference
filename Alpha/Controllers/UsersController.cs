@@ -71,7 +71,6 @@ namespace Alpha.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _context.Users.FirstOrDefaultAsync(s => s.Email == model.Email);
-
                 if (user == null)
                 {
                     Role role = await _context.Roles.FirstOrDefaultAsync(s => s.Name == "Employee");
@@ -83,11 +82,8 @@ namespace Alpha.Controllers
                         Password = model.Password
                     };
                     _context.Users.Add(user);
-
                     await _context.SaveChangesAsync();
-
                     await Authenticate(user);
-
                     return RedirectToAction("Index", "Rooms");
                 }
                 else
@@ -110,17 +106,9 @@ namespace Alpha.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _context.Users.Include(s => s.Role).FirstOrDefaultAsync(s => s.Email == model.Email && s.Password == model.Password);
-                
                 if (user != null)
                 {
-                    string name = user.Name;
-                    int roleid = user.RoleId;
-                    string email = user.Email;
-                    Role role = user.Role;
-                    string psw = user.Password;
-
                     await Authenticate(user);
-
                     return RedirectToAction("Index", "Rooms");
                 }
                 else
@@ -135,12 +123,9 @@ namespace Alpha.Controllers
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name),
-                new Claim("email", user.Email),
-                new Claim("id", user.Id.ToString())
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
             };
-
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie",
                 ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
