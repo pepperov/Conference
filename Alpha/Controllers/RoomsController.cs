@@ -41,9 +41,9 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
+            //ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
+            //ViewData["Status"] = Statuses;
             ViewData["Users"] = _context.Users.ToList();
-//            ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
-            ViewData["Status"] = Statuses;
             return View(room);
         }
 
@@ -51,13 +51,11 @@ namespace Alpha.Controllers
         [HttpGet]
         public ActionResult Reservations(int? id)
         {
-            //Room room = _context.Rooms.Include(r => r.Reservations).FirstOrDefault(m => m.Id == id);
-            //var res = room.Reservations.Where(s => s.Status == Status.Approved);
-            var res = _context.Reservations.Where(s => s.Status == Status.Approved && s.RoomId == id).Include(r => r.Room);
-
+            var res = _context.Reservations
+                .Where(s => s.Status == Status.Approved && s.RoomId == id)
+                .Include(r => r.Room).ToList();
+            //ViewData["Status"] = Statuses;
             ViewData["Users"] = _context.Users.ToList();
-            ViewData["Status"] = Statuses;
-
             return PartialView("_Reservations", res);
         }
 

@@ -23,11 +23,11 @@ namespace Alpha.Controllers
         }
 
         // GET: Reservations
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index()
         {
-            var reservations = _context.Reservations.Include(r => r.Room).Include(r => r.User);
-            ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
-            return View(await reservations.ToListAsync());
+            var res = _context.Reservations;
+            return View(await res.ToListAsync());
         }
 
         // GET: Reservations/Add
@@ -86,6 +86,32 @@ namespace Alpha.Controllers
             return View(reservation);
         }
 
+        // GET: Reservations/Reservations
+        [Authorize(Roles = "Manager")]
+        public IActionResult Reservations()
+        {
+            var res = _context.Reservations
+                .Include(s => s.Room)
+                .Include(s => s.User)
+                .OrderBy(s => s.Status);
+            ViewData["Status"] = Statuses;
+            return PartialView("_Reservations", res);
+        }
+
+        // GET: Reservations/Setstatus
+        public async Task<Status> Setstatus(int id, int status)
+        {
+            Reservation reservation = await _context.Reservations.FirstOrDefaultAsync(s => s.Id == id);
+            if (ModelState.IsValid)
+            {
+                reservation.Status = (Status)status;
+                _context.Update(reservation);
+                await _context.SaveChangesAsync();
+            }
+            return 0;
+        }
+
+
         // POST: Reservations/Edit/
         [Authorize(Roles = "Manager")]
         [HttpPost]
@@ -118,8 +144,6 @@ namespace Alpha.Controllers
                 else
                 {
                     return RedirectToAction("Index");
-                    //return RedirectToAction("Details", "Rooms", roomid);
-                    //return Redirect($"~/Rooms/Details/{roomid}");
                 }
             }
             ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
@@ -127,6 +151,7 @@ namespace Alpha.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Name", reservation.UserId);
             return View(reservation);
         }
+
 
         // GET: Reservations/Remove/
         [Authorize(Roles = "Manager")]

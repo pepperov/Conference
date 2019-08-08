@@ -46,7 +46,10 @@
                         <li><a asp-controller="Users" asp-action="Logout"><span class="icon">&rarr;</span>Logout</a></li>
                         <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
                         <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-                        <li><a asp-controller="Reservations" asp-action="Index">Reservations</a></li>
+                        @if (IsManager)
+                        {
+                            <li><a asp-controller="Reservations" asp-action="Index">Reservations</a></li>
+                        }
                     }
                     else
                     {

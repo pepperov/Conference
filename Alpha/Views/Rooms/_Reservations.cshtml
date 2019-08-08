@@ -1,6 +1,6 @@
 ﻿@{
     bool auth = User.Identity.IsAuthenticated;
-    bool IsManager = auth && User.IsInRole("Manager");
+    bool isManager = auth && User.IsInRole("Manager");
 }
 
 @model IEnumerable<Alpha.Models.Reservation>
@@ -17,7 +17,7 @@
     </div>
     @foreach (var item in Model.ToList().OrderBy(r => r.Start))
     {
-        <a class=@(IsManager ? "" : "disabled") asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
+        <a class=@(isManager ? "" : "disabled") asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id">
             <div class="row">
                 <div class="col-xs-4">
                     @item.Start.DayOfWeek, @item.Start.ToShortDateString(),

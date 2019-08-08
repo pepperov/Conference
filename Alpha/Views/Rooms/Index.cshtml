@@ -1,6 +1,6 @@
 ﻿@{
     bool auth = User.Identity.IsAuthenticated;
-    bool IsManager = auth && User.IsInRole("Manager");
+    bool isManager = auth && User.IsInRole("Manager");
 }
 
 @model IEnumerable<Alpha.Models.Room>
@@ -11,7 +11,7 @@
 
 <h2>Rooms</h2>
 
-<a class=@(IsManager ? "" : "disabled") asp-action="Add">
+<a class=@(isManager ? "" : "disabled") asp-action="Add">
     <div class="row header">
         <div class="col-xs-12">
             + Add new room
