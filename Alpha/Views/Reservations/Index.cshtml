@@ -19,22 +19,13 @@
 </a>
 
 <script type="text/javascript">
+
     function GetReservations() {
-        $.ajax({
-            type: "GET",
-            url: "../Reservations/Reservations",
-            dataType: "text",
-            success: function (data) {
-                if (data != null) {
-                    $("#res").html(data);
-                } else {
-                    $("#res").text("Something went wrong");
-                }
-            },
-            failure: function (response) {
-                $("#res").text("Failure");
-            },
-            error: function (response) {
+        let url = "../Reservations/Reservations";
+        $.get(url, function (data) {
+            if (data != null) {
+                $("#res").html(data);
+            } else {
                 $("#res").text("Error");
             }
         });

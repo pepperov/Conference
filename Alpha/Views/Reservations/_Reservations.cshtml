@@ -53,7 +53,7 @@
             @if (isIdle)
             {
                 <div class="form-group">
-                    <input type="submit" onclick="Approve(@item.Id, 0)" value="&#10003;&nbsp;Approve" class="btn btn-success" />
+                    <input type="button" onclick="Approve(@item.Id, 0);" value="&#10003;&nbsp;Approve" class="btn btn-success" />
                 </div>
             }
         </div>
@@ -66,24 +66,10 @@
     function Approve(id) {
         let url = "../Reservations/Approve/" + id;
         $("#status").text("Updating...");
-
-        $.ajax({
-            type: "GET",
-            url: url,
-            dataType: "text",
-            success: function (data) {
-                if (data != null) {
-                    GetReservations();
-                    setInterval(GetReservations, 5000);
-                    $("#status").text("Approved");
-                } else {
-                    $("#status").text("Something went wrong");
-                }
-            },
-            failure: function (response) {
-                $("#status").text("Failure");
-            },
-            error: function (response) {
+        $.get(url, function (data) {
+            if (data != null) {
+                GetReservations();
+            } else {
                 $("#status").text("Error");
             }
         });

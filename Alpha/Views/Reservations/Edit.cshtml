@@ -26,6 +26,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status" class="form-control" asp-items="ViewBag.Status"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
                 <label asp-for="RoomId" class="control-label"></label>
                 (
                 <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.Room.Id">
@@ -42,11 +47,6 @@
                 </a>)
                 <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
                 <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control" asp-items="ViewBag.Status"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Start" class="control-label"></label>
