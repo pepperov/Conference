@@ -48,7 +48,7 @@
                         <li><a asp-controller="Users" asp-action="Index">Users</a></li>
                         @if (isManager)
                         {
-                            <li><a asp-controller="Reservations" asp-action="Index">Reservations</a></li>
+                            <li><a asp-controller="Reservations" asp-action="Index">Reservations&nbsp;<span id="count" class="counter"></span></a></li>
                         }
                     }
                     else
@@ -92,6 +92,24 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
+
+    <script type="text/javascript">
+        function GetCount() {
+            let url = "/Home/Reservations";
+            $.get(url, function (data) {
+                if (data > 0) {
+                    $("#count").show();
+                    $("#count").text(data);
+                } else {
+                    $("#count").hide();
+                }
+            });
+        }
+        setInterval(GetCount, 5000);
+        GetCount();
+    </script>
+
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

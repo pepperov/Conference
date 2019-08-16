@@ -41,8 +41,6 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
-            //ViewData["Status"] = new SelectList(Statuses, Statuses.ToString());
-            //ViewData["Status"] = Statuses;
             ViewData["Users"] = _context.Users.ToList();
             return View(room);
         }
@@ -54,7 +52,6 @@ namespace Alpha.Controllers
             var res = _context.Reservations
                 .Where(s => s.Status == Status.Approved && s.RoomId == id)
                 .Include(r => r.Room).ToList();
-            //ViewData["Status"] = Statuses;
             ViewData["Users"] = _context.Users.ToList();
             return PartialView("_Reservations", res);
         }

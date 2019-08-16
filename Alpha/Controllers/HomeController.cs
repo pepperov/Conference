@@ -4,20 +4,30 @@ using Alpha.Models;
 using Alpha.Data;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Alpha.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly AlphaDbContext _context;
+
         public IActionResult Index()
         {
             return RedirectToAction("Login", "Users");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public HomeController(AlphaDbContext context)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            _context = context;
+        }
+
+        // GET: Home/Reservations
+        public async Task<int> Reservations()
+        {
+            var count = await _context.Reservations.CountAsync(s => s.Status == Status.Idle);
+            return count;
         }
 
     }
