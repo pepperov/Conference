@@ -23,6 +23,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Rooms
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var rooms = _context.Rooms.Include(r => r.Reservations);
@@ -30,6 +31,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Rooms/Details/
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -98,9 +100,8 @@ namespace Alpha.Controllers
         [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Descrtiption,Seats,Projector,Board")] Room room)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Descrtiption,Seats,Projector,Board")] Room room)
         {
-            room.Id = id;
             if (ModelState.IsValid)
             {
                 try
@@ -119,7 +120,7 @@ namespace Alpha.Controllers
                         throw;
                     }
                 }
-                return Redirect($"/Rooms/Details/{id}");
+                return Redirect($"/Rooms/Details/{room.Id}");
             }
             return View(room);
         }

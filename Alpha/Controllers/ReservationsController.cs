@@ -31,6 +31,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Reservations/Add
+        [Authorize(Roles = "Manager")]
         public IActionResult Add(int? id)
         {
             var users = _context.Users.Where(s => s.Email == User.Identity.Name).ToList();
@@ -44,6 +45,7 @@ namespace Alpha.Controllers
         // POST: Reservations/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Add([Bind("Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
         {
             reservation.Status = Status.Idle;
@@ -90,12 +92,12 @@ namespace Alpha.Controllers
 
         // GET: Reservations/Reservations
         [Authorize(Roles = "Manager")]
-        public IActionResult Reservations()
+        public IActionResult Reservations(int? order)
         {
             var res = _context.Reservations
                 .Include(s => s.Room)
                 .Include(s => s.User)
-                .OrderBy(s => s.Status);
+                .OrderBy(s => s.Start);
             ViewData["Status"] = Statuses;
             return PartialView("_Reservations", res);
         }
@@ -119,9 +121,8 @@ namespace Alpha.Controllers
         [Authorize(Roles = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Status,Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
+        public async Task<IActionResult> Edit([Bind("Id,Status,Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
         {
-            reservation.Id = id;
             if (ModelState.IsValid)
             {
                 try
@@ -131,7 +132,7 @@ namespace Alpha.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservationExists(id))
+                    if (!ReservationExists(reservation.Id))
                     {
                         return NotFound();
                     }

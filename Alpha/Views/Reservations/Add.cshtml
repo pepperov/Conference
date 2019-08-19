@@ -34,6 +34,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="End" class="control-label"></label>
+                <input type="button" onclick="SetTime(15);" value="15 mins" class="btn btn-default" />
+                <input type="button" onclick="SetTime(20);" value="20 mins" class="btn btn-default" />
+                <input type="button" onclick="SetTime(30);" value="30 mins" class="btn btn-default" />
+                <input type="button" onclick="SetTime(45);" value="45 mins" class="btn btn-default" />
+                <input type="button" onclick="SetTime(60);" value="1 hr" class="btn btn-default" />
+                <input type="button" onclick="SetTime(90);" value="90 mins" class="btn btn-default" />
+                <input type="button" onclick="SetTime(120);" value="2 hr" class="btn btn-default" />
+            </div>
+            <div class="form-group">
                 <input asp-for="End" class="form-control" />
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
@@ -43,6 +52,20 @@
         </form>
     </div>
 </div>
+
+<script type="text/javascript">
+    let currentDate = new Date();
+    currentDate.setMinutes(currentDate.getMinutes() - currentDate.getTimezoneOffset());
+    console.log("currentDate > " + currentDate.toISOString().substring(0, 16));
+    $("#Start").val(currentDate.toISOString().substring(0, 16));
+    
+    function SetTime(num) {
+        newDate = new Date($("#Start").val());
+        newDate.setMinutes(newDate.getMinutes() + - newDate.getTimezoneOffset() + num);
+        console.log("newDate > " + newDate.toISOString().substring(0, 16));
+        $("#End").val(newDate.toISOString().substring(0, 16));
+    }
+</script>
 
 
 @section Scripts {
