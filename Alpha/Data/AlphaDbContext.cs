@@ -13,7 +13,7 @@ namespace Alpha.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
-        public AlphaDbContext()
+        public AlphaDbContext(DbContextOptions<AlphaDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
@@ -37,6 +37,9 @@ namespace Alpha.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AlphaDb;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer(DefaultConnection);
+            
+
         }
     }
 }

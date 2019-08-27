@@ -31,7 +31,7 @@ namespace Alpha.Controllers
         }
 
         // GET: Reservations/Add
-        [Authorize(Roles = "Manager")]
+        [Authorize]
         public IActionResult Add(int? id)
         {
             var users = _context.Users.Where(s => s.Email == User.Identity.Name).ToList();
@@ -45,7 +45,7 @@ namespace Alpha.Controllers
         // POST: Reservations/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Manager")]
+        [Authorize]
         public async Task<IActionResult> Add([Bind("Start,End,UserId,RoomId")] Reservation reservation, int? roomid)
         {
             reservation.Status = Status.Idle;

@@ -54,15 +54,13 @@
 </div>
 
 <script type="text/javascript">
-    let currentDate = new Date();
+    var currentDate = new Date();
     currentDate.setMinutes(currentDate.getMinutes() - currentDate.getTimezoneOffset());
-    console.log("currentDate > " + currentDate.toISOString().substring(0, 16));
     $("#Start").val(currentDate.toISOString().substring(0, 16));
     
     function SetTime(num) {
-        newDate = new Date($("#Start").val());
-        newDate.setMinutes(newDate.getMinutes() + - newDate.getTimezoneOffset() + num);
-        console.log("newDate > " + newDate.toISOString().substring(0, 16));
+        var newDate = new Date($("#Start").val());
+        newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset() + num);
         $("#End").val(newDate.toISOString().substring(0, 16));
     }
 </script>
