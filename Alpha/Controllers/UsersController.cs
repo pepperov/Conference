@@ -194,6 +194,7 @@ namespace Alpha.Controllers
             {
                 return NotFound();
             }
+
             User user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
@@ -209,7 +210,13 @@ namespace Alpha.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             User user = await _context.Users.FindAsync(id);
+            var res = await _context.Reservations.Where(s => s.UserId == id).ToListAsync();
+            foreach (Reservation reservation in res)
+            {
+                _context.Reservations.Remove(reservation);
+            }
             _context.Users.Remove(user);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

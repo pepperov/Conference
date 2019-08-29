@@ -26,13 +26,13 @@ namespace Alpha.Models
 
         [Required(ErrorMessage = "Required")]
         [Display(Name = "Owner")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public User User { get; set; }
 
         [Required(ErrorMessage = "Required")]
         [Display(Name = "Room")]
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
 
         public Room Room { get; set; }
     }

@@ -23,23 +23,24 @@ namespace Alpha.Data
             modelBuilder.Entity<Role>()
                 .HasMany(e => e.Users)
                 .WithOne(e => e.Role)
-                .HasForeignKey(e => e.RoleId);
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<Reservation>(entity =>
                 {
-                    entity.HasOne(e => e.User).WithMany(e => e.Reservations).HasForeignKey(e => e.UserId);
-                    entity.HasOne(e => e.Room).WithMany(e => e.Reservations).HasForeignKey(e => e.RoomId);
+                    entity.HasOne(e => e.User)
+                    .WithMany(e => e.Reservations)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                    entity.HasOne(e => e.Room)
+                    .WithMany(e => e.Reservations)
+                    .HasForeignKey(e => e.RoomId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
                 }
              );
             base.OnModelCreating(modelBuilder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AlphaDb;Trusted_Connection=True;");
-            //optionsBuilder.UseSqlServer(DefaultConnection);
-            
-
-        }
     }
 }

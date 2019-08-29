@@ -147,8 +147,15 @@ namespace Alpha.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveConfirmed(int id)
         {
+            var res = await _context.Reservations.Where(s => s.RoomId == id).ToListAsync();
+            foreach(Reservation reservation in res)
+            {
+                _context.Reservations.Remove(reservation);
+            }
+
             Room room = await _context.Rooms.FindAsync(id);
             _context.Rooms.Remove(room);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
